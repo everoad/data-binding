@@ -53,9 +53,7 @@ ItemContainer.prototype.getItems = function () {
     let state = this.state
     ItemAPI.getItems(function (items) {
         $.setState(state, {
-            items   : items,
-            title   : null,
-            writer  : null
+            items   : items
         })
     })
 }
@@ -76,6 +74,10 @@ ItemContainer.prototype.addItem = function () {
     let _this = this
     ItemAPI.addItem(newItem, function () {
         _this.getItems()
+        $.setState(_this.state, {
+            title   : null,
+            writer  : null
+        })
     })
 }
 
