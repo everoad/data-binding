@@ -3,8 +3,6 @@
 
 function FormComponent () {
     this.templateName = 'Form'
-    this.state = {}
-    this.ui = {}
 }
 
 FormComponent.prototype.shouldUpdateComponent = function (prevState, newState) {

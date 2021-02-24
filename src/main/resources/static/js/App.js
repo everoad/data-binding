@@ -3,6 +3,6 @@
 
 
 
-$.component({}, Container).then(function (component) {
+$.component({}, ItemContainer).then(function (component) {
     $('#app').append(component)
 })

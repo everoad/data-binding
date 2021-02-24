@@ -2,8 +2,6 @@
 
 function ItemComponent() {
     this.templateName = 'Item'
-    this.state = {}
-    this.ui = {}
 
     this.handleDelBtnClick = this.handleDelBtnClick.bind(this)
 }

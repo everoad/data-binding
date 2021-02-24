@@ -1,15 +1,13 @@
 'use strict';
 
-function Container() {
-
+function ItemContainer() {
     this.templateName = 'Container'
 
     this.state = {
         title   : null,
         writer  : null,
-        items   : [{ title: 'Hello', writer: 'World!!@@' }]
+        items   : []
     }
-    this.ui = {}
 
     this.onInput = this.onInput.bind(this)
     this.addItem = this.addItem.bind(this)
@@ -17,12 +15,17 @@ function Container() {
 }
 
 
-Container.prototype.shouldUpdateComponent = function (prevState, newState) {
+ItemContainer.prototype.shouldUpdateComponent = function (prevState, newState) {
     return false
 }
 
 
-Container.prototype.render = function (template) {
+ItemContainer.prototype.componentDidMount = function () {
+    this.getItems()
+}
+
+
+ItemContainer.prototype.render = function (template) {
     let ui = this.ui
     let html = BrowserDOM(template(), ui)
 
@@ -46,30 +49,40 @@ Container.prototype.render = function (template) {
 }
 
 
-Container.prototype.onInput = function (e) {
+ItemContainer.prototype.getItems = function () {
+    let state = this.state
+    ItemAPI.getItems(function (items) {
+        $.setState(state, {
+            items   : items,
+            title   : null,
+            writer  : null
+        })
+    })
+}
+
+
+ItemContainer.prototype.onInput = function (e) {
     let newState = {}
     newState[e.target.name] = e.target.value
     $.setState(this.state, newState)
 }
 
 
-Container.prototype.addItem = function () {
+ItemContainer.prototype.addItem = function () {
     let newItem = {
         title   : this.state.title,
         writer  : this.state.writer
     }
-    $.setState(this.state, {
-        items   : this.state.items.concat([ newItem ]),
-        title   : null,
-        writer  : null
+    let _this = this
+    ItemAPI.addItem(newItem, function () {
+        _this.getItems()
     })
 }
 
 
-Container.prototype.removeItem = function (item) {
-    let items = this.state.items.slice()
-    items.splice(items.indexOf(item), 1)
-    $.setState(this.state, {
-        items: items
+ItemContainer.prototype.removeItem = function (item) {
+    let _this = this
+    ItemAPI.removeItem(item.id, function () {
+        _this.getItems()
     })
 }

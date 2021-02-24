@@ -3,8 +3,6 @@
 
 function ItemListComponent() {
     this.templateName = 'ItemList'
-    this.state = {}
-    this.ui = {}
 }
 
 

@@ -113,7 +113,6 @@ let Service = {
     },
 
     error: function (jqXHR, errorFnc) {
-        Utils.loading(false)
         if (errorFnc && errorFnc(jqXHR)) {
             return
         }
@@ -126,7 +125,7 @@ let Service = {
                 location.href = '/login'
                 break
             default:
-                toastr["error"](response.messages[0])
+                alert(response.errors[0].defaultMessage)
                 break
         }
     }
