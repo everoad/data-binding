@@ -15,6 +15,12 @@ public class ItemDto {
         @NotBlank
         private String writer;
 
+        public Item toEntity() {
+            return Item.builder()
+                    .title(title)
+                    .writer(writer)
+                    .build();
+        }
     }
 
     @Getter @Setter
@@ -31,11 +37,11 @@ public class ItemDto {
             this.writer = writer;
         }
 
-        public static info create(Integer id, save dto) {
+        public static info create(Item item) {
             return info.builder()
-                    .id(id)
-                    .title(dto.getTitle())
-                    .writer(dto.getWriter())
+                    .id(item.getId())
+                    .title(item.getTitle())
+                    .writer(item.getWriter())
                     .build();
         }
 

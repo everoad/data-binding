@@ -1,5 +1,6 @@
 package com.study.data;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,43 +11,32 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/items", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ItemController {
 
-    private int count = 0;
-    private final List<ItemDto.info> items = new ArrayList<>();
+    private final ItemService itemService;
 
     @GetMapping
     public List<ItemDto.info> getItemList() {
-        return items;
+        return itemService.queryItems();
     }
 
     @PostMapping
-    public Boolean addItem(@Valid @RequestBody ItemDto.save dto) {
-        items.add(ItemDto.info.create(count++, dto));
+    public Boolean addItem(@Valid @RequestBody ItemDto.save saveDto) {
+        itemService.addItem(saveDto);
         return true;
     }
 
     @PutMapping("/{id}")
     public Boolean editItem(@PathVariable("id") Integer id, @Valid @RequestBody ItemDto.save saveDto) {
-        for (ItemDto.info infoDto : items) {
-            if (infoDto.getId().equals(id)) {
-                infoDto.setTitle(saveDto.getTitle());
-                infoDto.setWriter(saveDto.getWriter());
-                break;
-            }
-        }
+        itemService.editItem(id, saveDto);
         return true;
     }
 
     @DeleteMapping("/{id}")
     public Boolean removeItem(@PathVariable("id") Integer id) {
-        for (int i = items.size() - 1; i >= 0; i--) {
-            if (items.get(i).getId().equals(id)) {
-                items.remove(i);
-                break;
-            }
-        }
+        itemService.removeItem(id);
         return true;
     }
 
