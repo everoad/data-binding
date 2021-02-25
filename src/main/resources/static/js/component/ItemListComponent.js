@@ -1,8 +1,9 @@
 'use strict';
 
 
-function ItemListComponent() {
+function ItemListComponent(props) {
     this.templateName = 'ItemList'
+    this.props = props
 }
 
 
@@ -13,8 +14,7 @@ ItemListComponent.prototype.shouldUpdateComponent = function (prevState, newStat
 
 ItemListComponent.prototype.render = function (template) {
     let props = this.props
-    let ui = this.ui
-    let html = BrowserDOM(template(), ui)
+    let fragment = BrowserDOM(template())
 
     props.data.items.forEach(function (item) {
         let itemProps = {
@@ -23,8 +23,8 @@ ItemListComponent.prototype.render = function (template) {
             removeItem  : props.removeItem
         }
         $.component(itemProps, ItemComponent).then(function (component) {
-            $(ui.itemList).append(component)
+            $(fragment.nodes.itemList).append(component)
         })
     })
-    return html
+    return fragment
 }

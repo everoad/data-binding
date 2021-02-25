@@ -1,8 +1,8 @@
 'use strict';
 
-function ItemContainer() {
+function ItemContainer(props) {
     this.templateName = 'ItemContainer'
-
+    this.props = props
     this.state = {
         title   : null,
         writer  : null,
@@ -27,8 +27,7 @@ ItemContainer.prototype.componentDidMount = function () {
 
 
 ItemContainer.prototype.render = function (template) {
-    let ui = this.ui
-    let html = BrowserDOM(template(), ui)
+    let fragment = BrowserDOM(template())
 
     let formProps = {
         data    : this.state,
@@ -36,7 +35,7 @@ ItemContainer.prototype.render = function (template) {
         addItem : this.addItem
     }
     $.component(formProps, FormComponent).then(function (component) {
-        $(ui.form).append(component)
+        $(fragment.nodes.form).append(component)
     })
 
     let listProps = {
@@ -45,9 +44,9 @@ ItemContainer.prototype.render = function (template) {
         removeItem  : this.removeItem
     }
     $.component(listProps, ItemListComponent).then(function (component) {
-        $(ui.list).append(component)
+        $(fragment.nodes.list).append(component)
     })
-    return html
+    return fragment
 }
 
 

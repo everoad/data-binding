@@ -1,12 +1,13 @@
 'use strict';
 
-function ItemComponent() {
+function ItemComponent(props) {
     this.templateName = 'Item'
     this.state = {
         title   : null,
         writer  : null,
         isEdit  : false
     }
+    this.props = props
     this.onInput = this.onInput.bind(this)
     this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this)
     this.handleEditBtnClick = this.handleEditBtnClick.bind(this)
@@ -22,15 +23,15 @@ ItemComponent.prototype.shouldUpdateComponent = function (prevState, newState) {
 
 ItemComponent.prototype.render = function (template) {
     let data = $.extend(true, {}, this.state, this.props.data)
-    let html = BrowserDOM(template(data), this.ui)
+    let fragment = BrowserDOM(template(data))
 
-    $(this.ui.title).binding(this.state, 'title', this.setValue).on('input', this.onInput)
-    $(this.ui.writer).binding(this.state, 'writer', this.setValue).on('input', this.onInput)
-    $(this.ui.saveBtn).on('click', this.handleSaveBtnClick)
-    $(this.ui.editBtn).on('click', this.handleEditBtnClick)
-    $(this.ui.delBtn).on('click', this.handleDelBtnClick)
-    $(this.ui.cancelBtn).on('click', this.handleEditBtnClick)
-    return html
+    $(fragment.nodes.title).binding(this.state, 'title', this.setValue).on('input', this.onInput)
+    $(fragment.nodes.writer).binding(this.state, 'writer', this.setValue).on('input', this.onInput)
+    $(fragment.nodes.saveBtn).on('click', this.handleSaveBtnClick)
+    $(fragment.nodes.editBtn).on('click', this.handleEditBtnClick)
+    $(fragment.nodes.delBtn).on('click', this.handleDelBtnClick)
+    $(fragment.nodes.cancelBtn).on('click', this.handleEditBtnClick)
+    return fragment
 }
 
 ItemComponent.prototype.setValue = function (value) {

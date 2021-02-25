@@ -1,9 +1,9 @@
 'use strict';
 
 
-function FormComponent () {
+function FormComponent (props) {
     this.templateName = 'Form'
-
+    this.props = props
     this.handleInputKeypress = this.handleInputKeypress.bind(this)
 }
 
@@ -12,11 +12,11 @@ FormComponent.prototype.shouldUpdateComponent = function (prevState, newState) {
 }
 
 FormComponent.prototype.render = function (template) {
-    let html = BrowserDOM(template(), this.ui)
-    $(this.ui.title).binding(this.props.data, 'title', this.setValue).on('input', this.props.onInput).on('keypress', this.handleInputKeypress)
-    $(this.ui.writer).binding(this.props.data, 'writer', this.setValue).on('input', this.props.onInput).on('keypress', this.handleInputKeypress)
-    $(this.ui.addBtn).on('click', this.props.addItem)
-    return html
+    let fragment = BrowserDOM(template())
+    $(fragment.nodes.title).binding(this.props.data, 'title', this.setValue).on('input', this.props.onInput).on('keypress', this.handleInputKeypress)
+    $(fragment.nodes.writer).binding(this.props.data, 'writer', this.setValue).on('input', this.props.onInput).on('keypress', this.handleInputKeypress)
+    $(fragment.nodes.addBtn).on('click', this.props.addItem)
+    return fragment
 }
 
 FormComponent.prototype.setValue = function (value) {

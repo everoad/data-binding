@@ -84,8 +84,7 @@
 
     $.component = function (props, component) {
 
-        let instance = new component()
-        instance.ui = {}
+        let instance = new component(props)
         if (instance.state !== undefined) {
             $.state(instance.state)
             $.observer(instance.state, function (prevState, newState) {
@@ -98,7 +97,7 @@
         }
 
         if (props !== undefined) {
-            instance.props = props
+            //instance.props = props
             if (instance.props.data !== undefined) {
                 $.observer(instance.props.data, function (prevState, newState) {
                     if (instance.shouldUpdateComponent !== undefined
@@ -116,17 +115,16 @@
             })
         }
 
-        function _renderCallback (newElement) {
-            console.log(newElement)
-            if (instance.element !== undefined) {
-                if (instance.element.wrapper !== undefined) {
-                    instance.element.wrapper.parentNode.replaceChild(newElement.wrapper, instance.element.wrapper)
+        function _renderCallback (newFragment) {
+            if (instance.fragment !== undefined) {
+                if (instance.fragment.wrapper !== undefined) {
+                    instance.fragment.wrapper.parentNode.replaceChild(newFragment.wrapper, instance.fragment.wrapper)
                 } else {
-                    $(instance.element).replaceWith($(newElement))
+                    $(instance.fragment).replaceWith($(newFragment))
                 }
             }
-            instance.element = newElement
-            return newElement
+            instance.fragment = newFragment
+            return newFragment
         }
 
         if (instance.componentDidMount !== undefined) {
