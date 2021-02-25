@@ -25,12 +25,15 @@ ItemComponent.prototype.render = function (template) {
     let data = $.extend(true, {}, this.state, this.props.data)
     let fragment = BrowserDOM(template(data))
 
-    $(fragment.nodes.title).binding(this.state, 'title', this.setValue).on('input', this.onInput)
-    $(fragment.nodes.writer).binding(this.state, 'writer', this.setValue).on('input', this.onInput)
-    $(fragment.nodes.saveBtn).on('click', this.handleSaveBtnClick)
-    $(fragment.nodes.editBtn).on('click', this.handleEditBtnClick)
-    $(fragment.nodes.delBtn).on('click', this.handleDelBtnClick)
-    $(fragment.nodes.cancelBtn).on('click', this.handleEditBtnClick)
+    if (this.state.isEdit) {
+        $(fragment.nodes.title).binding(this.state, 'title', this.setValue).on('input', this.onInput)
+        $(fragment.nodes.writer).binding(this.state, 'writer', this.setValue).on('input', this.onInput)
+        $(fragment.nodes.saveBtn).on('click', this.handleSaveBtnClick)
+        $(fragment.nodes.cancelBtn).on('click', this.handleEditBtnClick)
+    } else {
+        $(fragment.nodes.editBtn).on('click', this.handleEditBtnClick)
+        $(fragment.nodes.delBtn).on('click', this.handleDelBtnClick)
+    }
     return fragment
 }
 

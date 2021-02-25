@@ -81,6 +81,15 @@
         state.subscribers.push(callback)
     }
 
+    $.fn.addComponent = function (promise) {
+        if (promise !== undefined) {
+            let _this = this
+            promise.then(function (component) {
+                _this.append(component)
+            })
+        }
+    }
+
 
     $.component = function (props, component) {
 

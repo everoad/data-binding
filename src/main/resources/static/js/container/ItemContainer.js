@@ -34,18 +34,14 @@ ItemContainer.prototype.render = function (template) {
         onInput : this.onInput,
         addItem : this.addItem
     }
-    $.component(formProps, FormComponent).then(function (component) {
-        $(fragment.nodes.form).append(component)
-    })
+    $(fragment.nodes.form).addComponent($.component(formProps, FormComponent))
 
     let listProps = {
         data        : this.state,
         editItem    : this.editItem,
         removeItem  : this.removeItem
     }
-    $.component(listProps, ItemListComponent).then(function (component) {
-        $(fragment.nodes.list).append(component)
-    })
+    $(fragment.nodes.list).addComponent($.component(listProps, ItemListComponent))
     return fragment
 }
 

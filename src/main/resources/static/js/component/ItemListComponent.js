@@ -22,9 +22,7 @@ ItemListComponent.prototype.render = function (template) {
             editItem    : props.editItem,
             removeItem  : props.removeItem
         }
-        $.component(itemProps, ItemComponent).then(function (component) {
-            $(fragment.nodes.itemList).append(component)
-        })
+        $(fragment.nodes.list).addComponent($.component(itemProps, ItemComponent))
     })
     return fragment
 }
