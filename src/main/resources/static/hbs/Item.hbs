@@ -1,1 +1,13 @@
-<li>{{title}} : {{writer}} <button var="delBtn">삭제</button></li>
+{{#if isEdit}}
+    <li>
+        <div><input name="title" var="title"/></div>
+        <div><input name="writer" var="writer"/></div>
+        <div><button var="saveBtn">저장</button><button var="cancelBtn">취소</button></div>
+    </li>
+{{else}}
+    <li>
+        <div>{{title}}</div>
+        <div>{{writer}}</div>
+        <div><button var="editBtn">수정</button><button var="delBtn">삭제</button></div>
+    </li>
+{{/if}}

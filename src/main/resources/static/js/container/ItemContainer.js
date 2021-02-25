@@ -1,7 +1,7 @@
 'use strict';
 
 function ItemContainer() {
-    this.templateName = 'Container'
+    this.templateName = 'ItemContainer'
 
     this.state = {
         title   : null,
@@ -11,6 +11,7 @@ function ItemContainer() {
 
     this.onInput = this.onInput.bind(this)
     this.addItem = this.addItem.bind(this)
+    this.editItem = this.editItem.bind(this)
     this.removeItem = this.removeItem.bind(this)
 }
 
@@ -40,6 +41,7 @@ ItemContainer.prototype.render = function (template) {
 
     let listProps = {
         data        : this.state,
+        editItem    : this.editItem,
         removeItem  : this.removeItem
     }
     $.component(listProps, ItemListComponent).then(function (component) {
@@ -78,6 +80,14 @@ ItemContainer.prototype.addItem = function () {
             title   : null,
             writer  : null
         })
+    })
+}
+
+
+ItemContainer.prototype.editItem = function (id, item) {
+    let _this = this
+    ItemAPI.editItem(id, item, function () {
+        _this.getItems()
     })
 }
 

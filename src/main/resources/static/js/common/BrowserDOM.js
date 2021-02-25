@@ -69,10 +69,14 @@ function BrowserDOM (html, scope) {
 
     // add notes into DocumentFragment
     while (children.length > 0) {
+        let child = children[0];
+        if (child instanceof HTMLElement) {
+            fragment.wrapper = child;
+        }
         if (fragment.append){
-            fragment.append(children[0]);
+            fragment.append(child);
         }else{
-            fragment.appendChild(children[0]);
+            fragment.appendChild(child);
         }
     }
 

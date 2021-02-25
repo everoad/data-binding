@@ -48,32 +48,28 @@
     }
 
 
-    $.setState = function (state, params) {
-        let keys = []
+    $.setState = function (state, editState) {
         let _currState = $.extend(false, {}, state)
-        let _newState = $.extend(false, {}, state, params)
-        updateState(state, params)
+        let _newState = $.extend(false, {}, state, editState)
         if (state.subscribers !== undefined) {
             state.subscribers.forEach(function (subscriber) {
-                subscriber(_currState, _newState, keys)
+                subscriber(_currState, _newState)
             })
         }
-        function updateState (currState, newState, parentKey) {
+        updateState(state, editState)
+        function updateState (currState, newState) {
             Object.keys(newState).forEach(function (key) {
-                let newKey = parentKey ? (parentKey + '.' + key) : key
                 if (newState[key] instanceof Object && !(newState[key] instanceof Array)) {
-                    updateState(currState[key], newState[key], newKey)
+                    updateState(currState[key], newState[key])
                 } else {
                     currState[key] = newState[key]
-                    keys.push(newKey)
                 }
             })
         }
     }
 
 
-    $.observer = function (state, callback, excludes) {
-        let _excludes = excludes || []
+    $.observer = function (state, callback) {
         if (state.subscribers === undefined) {
             Object.defineProperty(state, 'subscribers', {
                 value       : [],
@@ -82,15 +78,7 @@
                 enumerable  : false
             })
         }
-        function subscriber (prevState, newState, keys) {
-            for (let i = 0; i < keys.length; i++) {
-                if (_excludes.indexOf(keys[i]) < 0) {
-                    callback(prevState, newState)
-                    break
-                }
-            }
-        }
-        state.subscribers.push(subscriber)
+        state.subscribers.push(callback)
     }
 
 
@@ -129,8 +117,13 @@
         }
 
         function _renderCallback (newElement) {
+            console.log(newElement)
             if (instance.element !== undefined) {
-                $(instance.element).replaceWith(newElement)
+                if (instance.element.wrapper !== undefined) {
+                    instance.element.wrapper.parentNode.replaceChild(newElement.wrapper, instance.element.wrapper)
+                } else {
+                    $(instance.element).replaceWith($(newElement))
+                }
             }
             instance.element = newElement
             return newElement

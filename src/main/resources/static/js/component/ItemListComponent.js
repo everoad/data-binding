@@ -19,6 +19,7 @@ ItemListComponent.prototype.render = function (template) {
     props.data.items.forEach(function (item) {
         let itemProps = {
             data        : item,
+            editItem    : props.editItem,
             removeItem  : props.removeItem
         }
         $.component(itemProps, ItemComponent).then(function (component) {

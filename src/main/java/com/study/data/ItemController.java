@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/items", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,6 +24,18 @@ public class ItemController {
     @PostMapping
     public Boolean addItem(@Valid @RequestBody ItemDto.save dto) {
         items.add(ItemDto.info.create(count++, dto));
+        return true;
+    }
+
+    @PutMapping("/{id}")
+    public Boolean editItem(@PathVariable("id") Integer id, @Valid @RequestBody ItemDto.save saveDto) {
+        for (ItemDto.info infoDto : items) {
+            if (infoDto.getId().equals(id)) {
+                infoDto.setTitle(saveDto.getTitle());
+                infoDto.setWriter(saveDto.getWriter());
+                break;
+            }
+        }
         return true;
     }
 
