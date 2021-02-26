@@ -47,21 +47,21 @@ function BrowserDOM (html, scope) {
 
     toScope(node, _scope);
 
-    if (html.constructor != String) {
-        return html;
-    }
-    // If the node in the highest hierarchy is one return it
-
-    if (node.childNodes.length == 1) {
-        // if a scope to add node variables is not set
-        // attach the object we created into the highest hierarchy node
-
-        // by adding the nodes property.
-        if (!scope) {
-            node.childNodes[0].nodes = _scope;
-        }
-        return node.childNodes[0];
-    }
+    // if (html.constructor != String) {
+    //     return html;
+    // }
+    // // If the node in the highest hierarchy is one return it
+    //
+    // if (node.childNodes.length == 1) {
+    //     // if a scope to add node variables is not set
+    //     // attach the object we created into the highest hierarchy node
+    //
+    //     // by adding the nodes property.
+    //     if (!scope) {
+    //         node.childNodes[0].nodes = _scope;
+    //     }
+    //     return node.childNodes[0];
+    // }
 
     // if the node in highest hierarchy is more than one return a fragment
     var fragment = document.createDocumentFragment();

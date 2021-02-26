@@ -81,13 +81,12 @@
         state.subscribers.push(callback)
     }
 
-    $.fn.addComponent = function (promise) {
-        if (promise !== undefined) {
-            let _this = this
-            promise.then(function (component) {
-                _this.append(component)
-            })
-        }
+
+    $.fn.appendComponent = function (props, component) {
+        let _this = this
+        $.component(props, component).then(function (fragment) {
+            _this.append(fragment.wrapper)
+        })
     }
 
 
@@ -120,17 +119,14 @@
 
         instance._render = function (callback) {
             return Handlebars.getTemplate(instance.templateName).then(function (template) {
-                return callback(instance.render(template))
+                let fragment = BrowserDOM(template(instance.getTemplateData ? instance.getTemplateData() : null))
+                return callback(instance.render(fragment))
             })
         }
 
         function _renderCallback (newFragment) {
             if (instance.fragment !== undefined) {
-                if (instance.fragment.wrapper !== undefined) {
-                    instance.fragment.wrapper.parentNode.replaceChild(newFragment.wrapper, instance.fragment.wrapper)
-                } else {
-                    $(instance.fragment).replaceWith($(newFragment))
-                }
+                instance.fragment.wrapper.parentNode.replaceChild(newFragment.wrapper, instance.fragment.wrapper)
             }
             instance.fragment = newFragment
             return newFragment

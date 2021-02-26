@@ -21,10 +21,11 @@ ItemComponent.prototype.shouldUpdateComponent = function (prevState, newState) {
     return false
 }
 
-ItemComponent.prototype.render = function (template) {
-    let data = $.extend(true, {}, this.state, this.props.data)
-    let fragment = BrowserDOM(template(data))
+ItemComponent.prototype.getTemplateData = function () {
+    return $.extend(true, {}, this.state, this.props.data)
+}
 
+ItemComponent.prototype.render = function (fragment) {
     if (this.state.isEdit) {
         $(fragment.nodes.title).binding(this.state, 'title', this.setValue).on('input', this.onInput)
         $(fragment.nodes.writer).binding(this.state, 'writer', this.setValue).on('input', this.onInput)

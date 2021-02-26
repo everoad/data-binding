@@ -12,17 +12,15 @@ ItemListComponent.prototype.shouldUpdateComponent = function (prevState, newStat
 }
 
 
-ItemListComponent.prototype.render = function (template) {
+ItemListComponent.prototype.render = function (fragment) {
     let props = this.props
-    let fragment = BrowserDOM(template())
-
     props.data.items.forEach(function (item) {
         let itemProps = {
             data        : item,
             editItem    : props.editItem,
             removeItem  : props.removeItem
         }
-        $(fragment.nodes.list).addComponent($.component(itemProps, ItemComponent))
+        $(fragment.nodes.list).appendComponent(itemProps, ItemComponent)
     })
     return fragment
 }

@@ -11,8 +11,7 @@ FormComponent.prototype.shouldUpdateComponent = function (prevState, newState) {
     return false
 }
 
-FormComponent.prototype.render = function (template) {
-    let fragment = BrowserDOM(template())
+FormComponent.prototype.render = function (fragment) {
     $(fragment.nodes.title).binding(this.props.data, 'title', this.setValue).on('input', this.props.onInput).on('keypress', this.handleInputKeypress)
     $(fragment.nodes.writer).binding(this.props.data, 'writer', this.setValue).on('input', this.props.onInput).on('keypress', this.handleInputKeypress)
     $(fragment.nodes.addBtn).on('click', this.props.addItem)

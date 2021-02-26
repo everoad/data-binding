@@ -26,22 +26,21 @@ ItemContainer.prototype.componentDidMount = function () {
 }
 
 
-ItemContainer.prototype.render = function (template) {
-    let fragment = BrowserDOM(template())
+ItemContainer.prototype.render = function (fragment) {
 
     let formProps = {
         data    : this.state,
         onInput : this.onInput,
         addItem : this.addItem
     }
-    $(fragment.nodes.form).addComponent($.component(formProps, FormComponent))
+    $(fragment.nodes.form).appendComponent(formProps, FormComponent)
 
     let listProps = {
         data        : this.state,
         editItem    : this.editItem,
         removeItem  : this.removeItem
     }
-    $(fragment.nodes.list).addComponent($.component(listProps, ItemListComponent))
+    $(fragment.nodes.list).appendComponent(listProps, ItemListComponent)
     return fragment
 }
 
